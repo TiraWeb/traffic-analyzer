@@ -226,15 +226,15 @@ def page_intrusion_detection():
                             elif 'attack_type' in r:
                                 st.markdown(f"### Attack Type: **{r['attack_type']}**")
 
-    # Tab 3: Live (simple local generator for reportable "live" samples)
+    # Tab 3: Live (simple local generator for reportable "live" traffic)
     with tab_live:
-        st.subheader("Live samples")
-        st.write("Generate a small real HTTP fetch from your laptop and analyze it as a 'live' traffic sample. Useful for demonstration and reports.")
+        st.subheader("Live check")
+        st.write("Generate a small HTTP fetch from your laptop and analyze it as 'live' traffic.")
 
         url = st.text_input("Target URL", value=st.session_state.get('local_gen_url', 'http://example.com'), key='local_gen_url')
         col_a, col_b = st.columns([1, 2])
         with col_a:
-            if st.button("Generate local traffic sample (HTTP fetch)", key="gen_local_live_btn"):
+            if st.button("Generate local traffic (HTTP fetch)", key="gen_local_live_btn"):
                 try:
                     import urllib.request
                     t0 = time.time()
@@ -259,7 +259,7 @@ def page_intrusion_detection():
                     df_single = pd.DataFrame([feats])
                     X_np = encode_and_scale(df_single, scaler, label_encoders)
                     if X_np is None:
-                        st.error("Preprocessing failed for generated sample.")
+                        st.error("Preprocessing failed for generated traffic.")
                     else:
                         results = predict_and_store(X_np, multiclass_model, label_encoder_attack)
                         if results:
@@ -276,12 +276,12 @@ def page_intrusion_detection():
                             log.append(entry)
                             st.session_state.local_traffic_log = log[-20:]
 
-                            st.success("Local traffic sample generated and processed.")
+                            st.success("Local traffic generated and processed.")
                             render_prediction_result(r)
-                            st.subheader('Inferred features (from generated sample)')
+                            st.subheader('Inferred features (from generated traffic)')
                             st.json(feats)
                         else:
-                            st.error("Prediction failed for generated sample.")
+                            st.error("Prediction failed for generated traffic.")
                 except Exception as e:
                     st.error(f"Local traffic generation failed: {e}")
 
