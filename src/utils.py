@@ -24,12 +24,7 @@ FLAG_OPTIONS = ['SF', 'S0', 'REJ', 'RSTR', 'SH', 'RSTO', 'S1', 'S2', 'RSTOS0', '
 
 
 def generate_test_data() -> dict:
-    """Create a semi-realistic KDD-style feature dict for demo/live generation.
-
-    This mirrors previous behavior in the monolithic `main.py`. It returns a dict
-    of FEATURE_NAMES -> values. Uses `st.info` to notify UI about the generated
-    pattern (attack vs normal).
-    """
+    
     d = {}
     is_attack = random.random() < 0.5
 

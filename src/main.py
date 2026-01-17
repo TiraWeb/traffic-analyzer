@@ -13,7 +13,7 @@ from datetime import datetime
 
 st.set_page_config(page_title="Network Intrusion Detection System", page_icon="🛡️", layout="wide")
 
-# Constants (moved to src/utils.py)
+# Constants 
 from utils import FEATURE_NAMES, CATEGORICAL_FEATURES, PROTOCOL_OPTIONS, SERVICE_OPTIONS, FLAG_OPTIONS, generate_test_data
 from models import load_models, encode_and_scale, predict_and_store
 from pages import page_home, page_intrusion_detection, page_visualizations, ensure_session_defaults
@@ -315,7 +315,7 @@ def _legacy_predict_and_store(X_np: np.ndarray):
         mc_pred = multiclass_model.predict(X_np)
         mc_prob = multiclass_model.predict_proba(X_np)
 
-        # Determine index of the normal class in the encoder (robust)
+        # Determine index of the normal class in the encoder 
         classes = list(label_encoder_attack.classes_)
         if 'normal.' in classes:
             normal_idx = classes.index('normal.')
@@ -324,7 +324,7 @@ def _legacy_predict_and_store(X_np: np.ndarray):
         else:
             normal_idx = None
 
-        # Debug / visibility (internal only - no UI noise)
+        # Debug / visibility 
         top_5_probs = sorted(enumerate(mc_prob[0]), key=lambda x: x[1], reverse=True)[:5]
         top_5_names = [(label_encoder_attack.inverse_transform([i])[0], f'{prob:.1%}') for i, prob in top_5_probs]
 
@@ -377,9 +377,7 @@ def _legacy_predict_and_store(X_np: np.ndarray):
             entry['attack_top'] = attack_list
             entry['attack_top_coverage'] = attack_top_coverage
             attack_count += 1
-            # Update latest attack type to top candidate
             st.session_state.latest_attack_type = attack_list[0]['name']
-            # Track recent attack top candidates (session-local history)
             ra = st.session_state.get('recent_attack_types', [])
             ra.append(attack_list[0]['name'])
             st.session_state.recent_attack_types = ra[-20:]
@@ -401,13 +399,12 @@ def _legacy_predict_and_store(X_np: np.ndarray):
     }
     hist = st.session_state.get('analysis_history', [])
     hist.append(hist_entry)
-    # Keep a bounded history to avoid memory growth
     st.session_state.analysis_history = hist[-200:]
 
     return results
 
 
-# Small helper to render a single prediction result (used by Manual and other flows)
+# Small helper to render a single prediction result 
 def _legacy_render_prediction_result(r):
     """Render a prediction result dict produced by predict_and_store()."""
     if r['pred_binary'] == 0:
@@ -502,9 +499,9 @@ def _legacy_page_intrusion_detection():
                 test = generate_test_data()
                 for k, v in test.items():
                     st.session_state[f"input_{k}"] = v
-                # Debug: show what was loaded
+                
                 st.success(f"Test data loaded. Example: duration={test['duration']}, protocol_type={test['protocol_type']}")
-                st.rerun()  # Refresh to show updated values
+                st.rerun()  
         with colB:
             if st.button("🧹 Clear Form", key="clear_form_btn"):
                 for f in FEATURE_NAMES:
@@ -512,7 +509,7 @@ def _legacy_page_intrusion_detection():
                 st.session_state.last_manual_result = None
                 st.success("Form cleared.")
 
-        # Manual KDD feature entry (moved inside the Manual tab)
+        # Manual KDD feature entry 
         st.subheader("Enter KDD Features")
         c1, c2, c3 = st.columns(3)
         data = {}

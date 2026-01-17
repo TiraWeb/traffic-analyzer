@@ -8,7 +8,7 @@ from utils import FEATURE_NAMES, CATEGORICAL_FEATURES, PROTOCOL_OPTIONS, SERVICE
 from models import load_models, encode_and_scale, predict_and_store
 
 
-# Session helpers (moved from main.py)
+# Session helpers 
 def ensure_session_defaults():
     if 'latest_attack_type' not in st.session_state:
         st.session_state.latest_attack_type = None

@@ -25,10 +25,7 @@ def load_models():
 
 
 def encode_and_scale(df: pd.DataFrame, scaler, label_encoders) -> np.ndarray:
-    """Encode categoricals, scale features, and return numpy array.
-
-    Uses the shared FEATURE_NAMES list from utils. Errors are reported to Streamlit.
-    """
+    
     try:
         df = df[FEATURE_NAMES].copy()
 
@@ -72,11 +69,7 @@ def encode_and_scale(df: pd.DataFrame, scaler, label_encoders) -> np.ndarray:
 
 
 def predict_and_store(X_np: np.ndarray, multiclass_model, label_encoder_attack):
-    """Run multiclass prediction and update Streamlit session state.
-
-    This mirrors previous behavior in the monolithic app and returns the same
-    `results` structure (list of dicts) for rendering.
-    """
+    
     if X_np is None:
         return None
     try:
